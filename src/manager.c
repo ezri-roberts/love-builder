@@ -2,8 +2,9 @@
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include <stdio.h>
+#include <string.h>
 
-int manager_get(VERSION version) {
+int manager_get(const char *path, VERSION version) {
 
 	CURL *curl;
 	FILE *file;
@@ -12,23 +13,22 @@ int manager_get(VERSION version) {
 	char url[1024];
 	char dest[256];
 	strcpy(url, "https://github.com/love2d/love/releases/download/");
+	strcpy(dest, path);
 
 	switch (version) {
 		case WIN_11_5:
-			strcpy(dest, "love-11.5-win64.zip");
-			strcat(url, "11.5/");
+			strcat(dest, "/love-11.5-win64.zip");
+			strcat(url, "11.5/love-11.5-win64.zip");
 			break;
 		case LINUX_11_5:
-			strcpy(dest, "love-11.5-x86_64.AppImage");
-			strcat(url, "11.5/");
+			strcat(dest, "/love-11.5-x86_64.AppImage");
+			strcat(url, "11.5/love-11.5-x86_64.AppImage");
 			break;
 		case OSX_11_5:
-			strcpy(dest, "love-11.5-macos.zip");
-			strcat(url, "11.5/");
+			strcat(dest, "/love-11.5-macos.zip");
+			strcat(url, "11.5/love-11.5-macos.zip");
 			break;
 	}
-
-	strcat(url, dest);
 
 	curl = curl_easy_init();
 

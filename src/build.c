@@ -12,7 +12,10 @@
 
 void project_build_love(project *proj) {
 
-	struct zip_t *zip = zip_open("game.love", ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
+	char game_path[PATH_MAX];
+	sprintf(game_path, "%s/game.love", proj->build_dir);
+
+	struct zip_t *zip = zip_open(game_path, ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
 	_zip_dir(proj, zip, proj->args.game_path);
 	zip_close(zip);
 }
@@ -43,7 +46,9 @@ int _zip_dir(project *proj, struct zip_t *zip, const char *path) {
 
 		if (de->d_type == DT_DIR) {
 
-			_zip_dir(proj, zip, fullpath);
+			if (strcmp(de->d_name, "build") != 0) {
+				_zip_dir(proj, zip, fullpath);
+			}
 		} else if (de->d_type == DT_REG) {
 
 			char *data = _read_file(fullpath);

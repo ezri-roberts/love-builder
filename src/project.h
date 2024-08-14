@@ -1,12 +1,14 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
+#include <limits.h>
 #include "args.h"
 #include "../lib/zip/src/zip.h"
 
 typedef struct {
 	args args;
-	char *root_dir;
+	char build_dir[PATH_MAX];
+	char love_dir[PATH_MAX];
 } project;
 
 project project_new(args args);

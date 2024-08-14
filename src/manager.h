@@ -11,7 +11,7 @@ typedef enum {
 	OSX_11_5,
 } VERSION;
 
-int manager_get(VERSION version);
+int manager_get(const char *path, VERSION version);
 size_t manager_write_data(void *ptr, size_t size, size_t nmemb, FILE *stream);
 
 #endif
