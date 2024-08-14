@@ -30,8 +30,6 @@ int manager_get(VERSION version) {
 
 	strcat(url, dest);
 
-	printf("%s, %s\n", url, dest);
-
 	curl = curl_easy_init();
 
 	if (!curl) {
