@@ -14,9 +14,12 @@ args args_get(int argc, const char **argv) {
 	
 	struct argparse_option options[] = {
 		OPT_HELP(),
+		OPT_GROUP("Build options"),
 		OPT_BOOLEAN('w', "win", &args.build_win, "Build an exe for Windows.", NULL, 0, 0),
 		OPT_BOOLEAN('l', "linux", &args.build_linux, "Build an AppImage for Linux.", NULL, 0, 0),
 		OPT_BOOLEAN('m', "mac", &args.build_mac, "Build a dmg for Mac.", NULL, 0, 0),
+		OPT_STRING('v', "version", &args.build_version, "The Love version to use.", NULL, 0, 0),
+		OPT_STRING('p', "path", &args.game_path, "The path to your game.", NULL, 0, 0),
 		OPT_END(),
 	};
 

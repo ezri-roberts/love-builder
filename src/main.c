@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "args.h"
-#include "manager.h"
+#include "project.h"
 
 int main(int argc, const char **argv) {
 
-	args args = args_get(argc, argv);
+	project proj = project_new(args_get(argc, argv));
 }
