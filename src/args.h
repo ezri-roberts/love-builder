@@ -2,8 +2,9 @@
 #define ARGS_H
 
 typedef struct {
-	const char *game_path;
-	const char *build_version;
+	const char *project_path;
+	const char *project_title;
+	const char *love_version;
 	int build_win;
 	int build_linux;
 	int build_mac;

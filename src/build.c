@@ -20,10 +20,10 @@ static char* names[VERSION_MAX] = {
 void project_build_love(project *proj) {
 
 	char game_path[PATH_MAX];
-	sprintf(game_path, "%s/game.love", proj->build_dir);
+	sprintf(game_path, "%s/%s.love", proj->build_dir, proj->name);
 
 	struct zip_t *zip = zip_open(game_path, ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
-	_zip_dir(proj, zip, proj->args.game_path);
+	_zip_dir(proj, zip, proj->args.project_path);
 	zip_close(zip);
 }
 
@@ -34,12 +34,11 @@ void project_build_win(project *proj) {
 	char exe_path[PATH_MAX];
 	
 	sprintf(version_path, "%s/%s", proj->love_dir, names[proj->version]); 
-	sprintf(love_path, "%s/%s", proj->build_dir, "game.love"); 
-	sprintf(exe_path, "%s/%s%s", proj->love_dir, names[proj->version], ".test"); 
-
-	printf("%s\n%s\n%s\n", version_path, love_path, exe_path);
+	sprintf(love_path, "%s/%s.love", proj->build_dir, proj->name); 
+	sprintf(exe_path, "%s/%s.exe", proj->love_dir, proj->name); 
 
 	fs_cat(version_path, love_path, exe_path);
+	remove(version_path);
 }
 
 int _zip_dir(project *proj, struct zip_t *zip, const char *path) {
