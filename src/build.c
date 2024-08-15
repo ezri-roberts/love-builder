@@ -1,4 +1,5 @@
 #include "project.h"
+#include "filesystem.h"
 #include <dirent.h>
 #include <limits.h>
 #include <limits.h>
@@ -10,6 +11,12 @@
 #include <time.h>
 #include <unistd.h>
 
+static char* names[VERSION_MAX] = {
+	"love-11.5-win64/love.exe",
+	"love-11.5-macos/",
+	"love-11.5-x86_64.AppImage",
+};
+
 void project_build_love(project *proj) {
 
 	char game_path[PATH_MAX];
@@ -18,6 +25,21 @@ void project_build_love(project *proj) {
 	struct zip_t *zip = zip_open(game_path, ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
 	_zip_dir(proj, zip, proj->args.game_path);
 	zip_close(zip);
+}
+
+void project_build_win(project *proj) {
+
+	char version_path[PATH_MAX];
+	char love_path[PATH_MAX];
+	char exe_path[PATH_MAX];
+	
+	sprintf(version_path, "%s/%s", proj->love_dir, names[proj->version]); 
+	sprintf(love_path, "%s/%s", proj->build_dir, "game.love"); 
+	sprintf(exe_path, "%s/%s%s", proj->love_dir, names[proj->version], ".test"); 
+
+	printf("%s\n%s\n%s\n", version_path, love_path, exe_path);
+
+	fs_cat(version_path, love_path, exe_path);
 }
 
 int _zip_dir(project *proj, struct zip_t *zip, const char *path) {
@@ -51,7 +73,7 @@ int _zip_dir(project *proj, struct zip_t *zip, const char *path) {
 			}
 		} else if (de->d_type == DT_REG) {
 
-			char *data = _read_file(fullpath);
+			char *data = fs_read(fullpath);
 
 			zip_entry_open(zip, relative_path);
 			zip_entry_write(zip, data, strlen(data));
@@ -78,29 +100,4 @@ char* _strip_path(const char *path) {
 		// If no separator is found, return the original string
 		return (char*)path;
 	}
-}
-
-char* _read_file(const char *path) {
-
-	FILE *file = fopen(path, "rb"); // Open the file in binary mode
-	char *buffer = NULL;
-	size_t length;
-
-	if (file) {
-		fseek(file, 0, SEEK_END);
-		length = ftell(file);
-		fseek(file, 0, SEEK_SET);
-
-		buffer = (char *)malloc(length + 1);
-		if (buffer) {
-			if (!fread(buffer, 1, length, file)) {
-				printf("Error reading file: %s\n", path);
-			}
-			buffer[length] = '\0';
-		}
-
-		fclose(file);
-	}
-
-	return buffer;
 }

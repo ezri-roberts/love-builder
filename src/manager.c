@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-char* names[VERSION_MAX] = {
+static char* names[VERSION_MAX] = {
 	"love-11.5-win64.zip",
 	"love-11.5-macos.zip",
 	"love-11.5-x86_64.AppImage",
